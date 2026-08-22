@@ -25,6 +25,33 @@ export type NodeKind =
 /** Исход шага влияет на цвет пакета и подсветку узла назначения. */
 export type StepOutcome = "info" | "blocked" | "exploited" | "success";
 
+/** Все допустимые типы узлов (для валидации и выпадающих списков). */
+export const NODE_KINDS: NodeKind[] = [
+  "attacker",
+  "client",
+  "victim",
+  "waf",
+  "server",
+  "db",
+  "store",
+  "mitm",
+  "idp",
+  "app",
+  "api",
+  "edge",
+  "phishing",
+  "service",
+  "operator",
+  "bot",
+];
+
+export const STEP_OUTCOMES: StepOutcome[] = [
+  "info",
+  "blocked",
+  "exploited",
+  "success",
+];
+
 export interface SchemeNode {
   id: string;
   label: string;

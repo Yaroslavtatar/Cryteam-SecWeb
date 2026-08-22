@@ -74,6 +74,7 @@ export default async function AdminGatePage({
       <AppHeader user={user} />
       <div className="container py-8 md:py-12">
         <AdminPanel
+          gate={params.gate}
           currentUserId={user.id}
           initialUsers={JSON.parse(JSON.stringify(users))}
           initialLogs={JSON.parse(JSON.stringify(logs))}

@@ -8,67 +8,21 @@ import {
   SkipForward,
   SkipBack,
   RotateCcw,
-  Skull,
-  Server,
-  Database,
   ShieldCheck,
-  Laptop,
-  UserRound,
-  KeyRound,
-  AppWindow,
-  Boxes,
-  Wifi,
   CheckCircle2,
   ShieldAlert,
   CircleDot,
-  Fish,
-  Globe,
-  Smartphone,
-  Bot,
   ListChecks,
 } from "lucide-react";
-import type {
-  NodeKind,
-  Scenario,
-  SchemeNode,
-  StepOutcome,
-} from "@/lib/scenarios";
+import type { Scenario, SchemeNode, StepOutcome } from "@/lib/scenarios";
 import { CATEGORY_ORDER } from "@/lib/scenarios";
+import { KIND_META, TONE_CLASSES } from "@/components/scheme-kinds";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { apiFetch } from "@/lib/client";
 import { cn } from "@/lib/utils";
 
 const STEP_MS = 2600;
-
-type Tone = "attack" | "defense" | "data" | "neutral";
-
-const KIND_META: Record<NodeKind, { icon: typeof Server; tone: Tone }> = {
-  attacker: { icon: Skull, tone: "attack" },
-  mitm: { icon: Wifi, tone: "attack" },
-  client: { icon: Laptop, tone: "neutral" },
-  victim: { icon: UserRound, tone: "neutral" },
-  waf: { icon: ShieldCheck, tone: "defense" },
-  edge: { icon: ShieldCheck, tone: "defense" },
-  server: { icon: Server, tone: "data" },
-  db: { icon: Database, tone: "data" },
-  store: { icon: Database, tone: "data" },
-  app: { icon: AppWindow, tone: "data" },
-  api: { icon: Boxes, tone: "data" },
-  idp: { icon: KeyRound, tone: "data" },
-  phishing: { icon: Fish, tone: "attack" },
-  bot: { icon: Bot, tone: "attack" },
-  operator: { icon: Smartphone, tone: "neutral" },
-  service: { icon: Globe, tone: "data" },
-};
-
-const TONE_CLASSES: Record<Tone, string> = {
-  attack: "border-destructive/50 bg-destructive/10 text-destructive",
-  defense:
-    "border-[hsl(var(--defense))]/50 bg-[hsl(var(--defense))]/10 text-[hsl(var(--defense))]",
-  data: "border-accent/50 bg-accent/10 text-accent",
-  neutral: "border-border bg-white/5 text-foreground",
-};
 
 const OUTCOME_META: Record<
   StepOutcome,

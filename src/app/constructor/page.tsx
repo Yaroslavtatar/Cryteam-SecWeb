@@ -7,6 +7,7 @@ import { AppHeader } from "@/components/app-header";
 import { CyberBackground } from "@/components/background";
 import { SchemePlayer } from "@/components/scheme-player";
 import { scenarios } from "@/lib/scenarios";
+import { getCustomScenarios } from "@/lib/custom-schemes";
 
 export const metadata: Metadata = { title: "Конструктор схем — CRYTEAM SecWeb" };
 export const dynamic = "force-dynamic";
@@ -19,16 +20,21 @@ export default async function ConstructorPage({
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/constructor");
 
-  const modules = await prisma.module.findMany({
-    select: { id: true, scenarioKey: true },
-  });
+  const [modules, customScenarios] = await Promise.all([
+    prisma.module.findMany({ select: { id: true, scenarioKey: true } }),
+    getCustomScenarios(),
+  ]);
   const moduleMap: Record<string, string> = {};
   for (const m of modules) moduleMap[m.scenarioKey] = m.id;
 
+  // Встроенные сценарии + пользовательские (созданные администратором).
+  const allScenarios = [...scenarios, ...customScenarios];
+
   const initialKey =
-    searchParams.scenario && scenarios.some((s) => s.key === searchParams.scenario)
+    searchParams.scenario &&
+    allScenarios.some((s) => s.key === searchParams.scenario)
       ? searchParams.scenario
-      : scenarios[0].key;
+      : allScenarios[0].key;
 
   return (
     <>
@@ -36,7 +42,7 @@ export default async function ConstructorPage({
       <AppHeader user={user} />
       <div className="container py-6 md:py-10">
         <SchemePlayer
-          scenarios={scenarios}
+          scenarios={allScenarios}
           initialKey={initialKey}
           moduleMap={moduleMap}
           canTrackProgress={user.role === ROLES.STUDENT}

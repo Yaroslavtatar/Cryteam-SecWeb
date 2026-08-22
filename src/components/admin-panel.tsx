@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Users,
@@ -13,8 +14,9 @@ import {
   Loader2,
   AlertTriangle,
   ShieldQuestion,
+  Workflow,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { apiFetch } from "@/lib/client";
 import { formatDateTime } from "@/lib/utils";
@@ -72,10 +74,12 @@ const SEVERITY_LABEL: Record<string, string> = {
 type Tab = "users" | "audit";
 
 export function AdminPanel({
+  gate,
   currentUserId,
   initialUsers,
   initialLogs,
 }: {
+  gate: string;
   currentUserId: string;
   initialUsers: AdminUser[];
   initialLogs: AdminLog[];
@@ -136,21 +140,27 @@ export function AdminPanel({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
-        <div className="grid h-11 w-11 place-items-center rounded-xl border border-accent/30 bg-accent/10 text-accent">
-          <ShieldQuestion className="h-6 w-6" />
-        </div>
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight">
-              Панель администратора
-            </h1>
-            <Badge variant="data">Скрытый маршрут</Badge>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="grid h-11 w-11 place-items-center rounded-xl border border-accent/30 bg-accent/10 text-accent">
+            <ShieldQuestion className="h-6 w-6" />
           </div>
-          <p className="text-sm text-muted-foreground">
-            Управление пользователями и мониторинг событий безопасности.
-          </p>
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold tracking-tight">
+                Панель администратора
+              </h1>
+              <Badge variant="data">Скрытый маршрут</Badge>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Управление пользователями и мониторинг событий безопасности.
+            </p>
+          </div>
         </div>
+        <Link href={`/panel/${gate}/editor`} className={buttonVariants({ variant: "secondary" })}>
+          <Workflow className="h-4 w-4" />
+          Конструктор схем (редактор)
+        </Link>
       </div>
 
       {/* Вкладки */}

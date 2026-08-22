@@ -42,21 +42,46 @@ model Module {
   summary      String
   category     String            // Например: "Веб-атаки", "Сеть", "Авторизация"
   difficulty   String   @default("Базовый") // "Базовый" | "Средний" | "Продвинутый"
-  scenarioKey  String            // Ключ интерактивной схемы (см. src/lib/scenarios.ts)
+  scenarioKey  String   @unique  // Ключ интерактивной схемы (встроенной или custom-*)
   estimatedMin Int      @default(15)
   isPublished  Boolean  @default(true)
   order        Int      @default(0)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  // Пользовательские (созданные администратором) схемы хранятся полностью в БД.
+  isCustom         Boolean @default(false)
+  finalStatus      String  @default("defended") // "defended" | "exploited"
+  finalTitle       String  @default("Итог")
+  finalDescription String  @default("")
+  mitigations      String  @default("[]")       // JSON-массив строк «как защититься»
+
   authorId     String?
   author       User?    @relation("ModuleAuthor", fields: [authorId], references: [id], onDelete: SetNull)
 
+  nodes        SchemeNode[]
   steps        SchemeStep[]
   progress     Progress[]
 
   @@index([category])
   @@index([isPublished])
+  @@index([isCustom])
+}
+
+/// Узел пользовательской схемы (для редактора в стиле n8n).
+model SchemeNode {
+  id       String @id @default(cuid())
+  moduleId String
+  module   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  key      String // Локальный идентификатор узла в пределах модуля
+  label    String
+  kind     String // Тип узла (attacker, waf, server, phishing, service, …)
+  x        Float  @default(50) // Координата X в процентах (0..100)
+  y        Float  @default(50) // Координата Y в процентах (0..100)
+
+  @@unique([moduleId, key])
+  @@index([moduleId])
 }
 
 /// Шаг интерактивной схемы (пошаговая визуализация атаки/защиты).

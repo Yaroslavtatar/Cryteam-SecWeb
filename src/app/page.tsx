@@ -8,6 +8,10 @@ import {
   Activity,
   KeySquare,
   ServerCog,
+  Fish,
+  Bot,
+  Smartphone,
+  MessageCircle,
 } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { AppHeader } from "@/components/app-header";
@@ -49,6 +53,11 @@ export default async function HomePage() {
     mitm: Activity,
     oauth: KeySquare,
     ddos: ServerCog,
+    "phishing-max": Fish,
+    "tg-phishing": MessageCircle,
+    "tg-otp-social": MessageCircle,
+    "tg-sim-swap": Smartphone,
+    "tg-fake-bot": Bot,
   };
 
   return (

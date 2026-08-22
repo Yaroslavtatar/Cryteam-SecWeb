@@ -12,7 +12,6 @@ import {
   EyeOff,
   Loader2,
   AlertTriangle,
-  ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -86,9 +85,6 @@ export function AuthForm({ mode }: { mode: Mode }) {
     >
       <Card>
         <CardHeader className="text-center">
-          <div className="mx-auto mb-2 grid h-12 w-12 place-items-center rounded-xl border border-primary/30 bg-primary/10 text-primary">
-            <ShieldCheck className="h-6 w-6" />
-          </div>
           <CardTitle className="text-2xl">
             {isRegister ? "Создание аккаунта" : "Вход в систему"}
           </CardTitle>

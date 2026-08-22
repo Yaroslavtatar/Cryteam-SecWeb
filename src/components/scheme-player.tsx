@@ -21,6 +21,11 @@ import {
   CheckCircle2,
   ShieldAlert,
   CircleDot,
+  Fish,
+  Globe,
+  Smartphone,
+  Bot,
+  ListChecks,
 } from "lucide-react";
 import type {
   NodeKind,
@@ -28,6 +33,7 @@ import type {
   SchemeNode,
   StepOutcome,
 } from "@/lib/scenarios";
+import { CATEGORY_ORDER } from "@/lib/scenarios";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { apiFetch } from "@/lib/client";
@@ -50,6 +56,10 @@ const KIND_META: Record<NodeKind, { icon: typeof Server; tone: Tone }> = {
   app: { icon: AppWindow, tone: "data" },
   api: { icon: Boxes, tone: "data" },
   idp: { icon: KeyRound, tone: "data" },
+  phishing: { icon: Fish, tone: "attack" },
+  bot: { icon: Bot, tone: "attack" },
+  operator: { icon: Smartphone, tone: "neutral" },
+  service: { icon: Globe, tone: "data" },
 };
 
 const TONE_CLASSES: Record<Tone, string> = {
@@ -113,6 +123,14 @@ export function SchemePlayer({
     () => scenarios.find((s) => s.key === key) ?? scenarios[0],
     [scenarios, key],
   );
+
+  // Категории для меню: сначала известный порядок, затем прочие.
+  const categories = useMemo(() => {
+    const present = Array.from(new Set(scenarios.map((s) => s.category)));
+    const ordered = CATEGORY_ORDER.filter((c) => present.includes(c));
+    const rest = present.filter((c) => !ordered.includes(c));
+    return [...ordered, ...rest];
+  }, [scenarios]);
   const steps = scenario.steps;
   const total = steps.length;
   const nodeById = useMemo(() => {
@@ -206,22 +224,39 @@ export function SchemePlayer({
         </p>
       </div>
 
-      {/* Выбор сценария */}
-      <div className="flex flex-wrap gap-2">
-        {scenarios.map((s) => (
-          <button
-            key={s.key}
-            onClick={() => selectScenario(s.key)}
-            className={cn(
-              "rounded-lg border px-3 py-1.5 text-sm font-medium transition-all",
-              s.key === key
-                ? "border-primary/50 bg-primary/15 text-primary shadow-glow"
-                : "border-border bg-white/[0.03] text-muted-foreground hover:bg-white/[0.06] hover:text-foreground",
-            )}
-          >
-            {s.title}
-          </button>
-        ))}
+      {/* Меню выбора модели атаки (сгруппировано по категориям) */}
+      <div className="glass-strong rounded-xl p-4">
+        <div className="mb-3 flex items-center gap-2">
+          <ListChecks className="h-4 w-4 text-primary" />
+          <h2 className="text-sm font-semibold">Меню: выберите модель атаки</h2>
+        </div>
+        <div className="space-y-3">
+          {categories.map((cat) => (
+            <div key={cat}>
+              <div className="mb-1.5 text-[0.7rem] font-medium uppercase tracking-wider text-muted-foreground">
+                {cat}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {scenarios
+                  .filter((s) => s.category === cat)
+                  .map((s) => (
+                    <button
+                      key={s.key}
+                      onClick={() => selectScenario(s.key)}
+                      className={cn(
+                        "rounded-lg border px-3 py-1.5 text-sm font-medium transition-all",
+                        s.key === key
+                          ? "border-primary/50 bg-primary/15 text-primary shadow-glow"
+                          : "border-border bg-white/[0.03] text-muted-foreground hover:bg-white/[0.06] hover:text-foreground",
+                      )}
+                    >
+                      {s.title}
+                    </button>
+                  ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
@@ -461,6 +496,7 @@ function StepPanel({
               Нажмите «Запуск», чтобы увидеть пошаговую анимацию, либо
               используйте «Шаг вперёд» для ручного разбора.
             </div>
+            <Mitigations items={scenario.mitigations} />
           </motion.div>
         )}
 
@@ -531,9 +567,30 @@ function StepPanel({
             <p className="text-sm leading-relaxed text-muted-foreground">
               {scenario.final.description}
             </p>
+            <Mitigations items={scenario.mitigations} />
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+function Mitigations({ items }: { items: string[] }) {
+  if (!items?.length) return null;
+  return (
+    <div className="rounded-lg border border-[hsl(var(--defense))]/25 bg-[hsl(var(--defense))]/[0.06] p-3">
+      <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--defense))]">
+        <ShieldCheck className="h-4 w-4" />
+        Как защититься
+      </div>
+      <ul className="space-y-1.5">
+        {items.map((tip, i) => (
+          <li key={i} className="flex gap-2 text-sm text-muted-foreground">
+            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[hsl(var(--defense))]" />
+            <span>{tip}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

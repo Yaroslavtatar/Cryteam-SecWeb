@@ -1,0 +1,115 @@
+// ============================================================
+//  CRYTEAM SecWeb — схема базы данных (Prisma + SQLite)
+//  Провайдер строго sqlite. Файл БД — dev.db.
+//  Примечание: SQLite в Prisma не поддерживает нативные enum,
+//  поэтому роли и статусы хранятся строками с контролем на уровне
+//  приложения (см. src/lib/roles.ts и Zod-схемы).
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Пользователь платформы. role: "ADMIN" | "STUDENT".
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  fullName      String
+  passwordHash  String
+  role          String   @default("STUDENT")
+  isBlocked     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  progress      Progress[]
+  auditLogs     AuditLog[]
+  authoredModules Module[] @relation("ModuleAuthor")
+
+  @@index([role])
+  @@index([isBlocked])
+}
+
+/// Обучающий модуль (курс) по кибербезопасности.
+model Module {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  summary      String
+  category     String            // Например: "Веб-атаки", "Сеть", "Авторизация"
+  difficulty   String   @default("Базовый") // "Базовый" | "Средний" | "Продвинутый"
+  scenarioKey  String            // Ключ интерактивной схемы (см. src/lib/scenarios.ts)
+  estimatedMin Int      @default(15)
+  isPublished  Boolean  @default(true)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  authorId     String?
+  author       User?    @relation("ModuleAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+
+  steps        SchemeStep[]
+  progress     Progress[]
+
+  @@index([category])
+  @@index([isPublished])
+}
+
+/// Шаг интерактивной схемы (пошаговая визуализация атаки/защиты).
+model SchemeStep {
+  id          String  @id @default(cuid())
+  moduleId    String
+  module      Module  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  order       Int
+  title       String
+  description String            // Описание шага на русском языке
+  fromNode    String            // Узел-источник (например "client")
+  toNode      String            // Узел-приёмник (например "waf")
+  packetLabel String  @default("Пакет данных")
+  outcome     String  @default("info") // "info" | "blocked" | "exploited"
+
+  @@unique([moduleId, order])
+  @@index([moduleId])
+}
+
+/// Прогресс ученика по модулю.
+model Progress {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId    String
+  module      Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  status      String   @default("in_progress") // "in_progress" | "completed"
+  lastStep    Int      @default(0)
+  completedAt DateTime?
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, moduleId])
+  @@index([userId])
+}
+
+/// Журнал аудита безопасности.
+model AuditLog {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+
+  action     String            // Например: "LOGIN_SUCCESS", "LOGIN_FAILED", "ROLE_CHANGED"
+  severity   String   @default("info") // "info" | "warning" | "critical"
+  message    String            // Человекочитаемое описание на русском
+  ip         String?
+  userAgent  String?
+
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  targetEmail String?          // Для действий над другим пользователем
+
+  @@index([action])
+  @@index([severity])
+  @@index([createdAt])
+}

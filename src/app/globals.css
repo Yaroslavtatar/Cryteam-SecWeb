@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Тёмная кибер-палитра CRYTEAM SecWeb (единый акцент + семантика). */
+    --background: 222 47% 5%;
+    --foreground: 210 40% 96%;
+
+    --card: 222 44% 8%;
+    --card-foreground: 210 40% 96%;
+
+    --muted: 217 33% 12%;
+    --muted-foreground: 215 18% 62%;
+
+    --primary: 157 90% 48%;
+    --primary-foreground: 222 47% 6%;
+
+    --secondary: 217 33% 14%;
+    --secondary-foreground: 210 40% 96%;
+
+    --accent: 190 95% 55%;
+    --accent-foreground: 222 47% 6%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: 157 90% 48%;
+
+    /* Семантика кибер-сценариев */
+    --attack: 0 84% 62%;
+    --defense: 152 76% 46%;
+    --data: 190 95% 58%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    min-height: 100dvh;
+  }
+
+  /* Аккуратный скроллбар в тёмной теме */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
+    border: 2px solid hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.3);
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer components {
+  /* Эффект «матового стекла» (glassmorphism) с fallback для
+     пользователей, отключивших прозрачность. */
+  .glass {
+    @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .glass {
+      @apply bg-card/95 backdrop-blur-none;
+    }
+  }
+
+  .glass-strong {
+    @apply border border-white/10 bg-card/70 backdrop-blur-2xl;
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .glass-strong {
+      @apply bg-card backdrop-blur-none;
+    }
+  }
+
+  /* Кибер-сетка на фоне */
+  .cyber-grid {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.35) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.35) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent;
+  }
+
+  .glow-text {
+    text-shadow: 0 0 24px hsl(var(--primary) / 0.45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

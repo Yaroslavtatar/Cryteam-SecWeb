@@ -1,0 +1,40 @@
+# Зависимости
+/node_modules
+/.pnp
+.pnp.js
+
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Продакшн-сборка
+/build
+
+# База данных SQLite (локальная разработка)
+*.db
+*.db-journal
+/prisma/dev.db
+/prisma/*.db
+
+# Переменные окружения (секреты не коммитим)
+.env
+.env*.local
+
+# Логи
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Системные файлы
+.DS_Store
+*.pem
+
+# Отладка
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Прочее
+/coverage

@@ -65,6 +65,9 @@ export interface EditorStep {
   to: string;
   packetLabel: string;
   outcome: StepOutcome;
+  method: string;
+  requestBody: string;
+  responseBody: string;
 }
 export interface EditorScheme {
   id?: string;
@@ -194,6 +197,9 @@ function SchemeEditorInner({
         to: conn.target as string,
         packetLabel: "данные",
         outcome: "info",
+        method: "",
+        requestBody: "",
+        responseBody: "",
       },
     ]);
   }, []);
@@ -243,6 +249,9 @@ function SchemeEditorInner({
           to: second,
           packetLabel: "данные",
           outcome: "info" as StepOutcome,
+          method: "",
+          requestBody: "",
+          responseBody: "",
         },
       ];
       return next;
@@ -639,6 +648,49 @@ function StepFields({
           rows={3}
           className="flex w-full rounded-lg border border-input bg-background/40 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         />
+      </div>
+
+      <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+        <div className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          Детали запроса (необязательно)
+        </div>
+        <div className="space-y-2">
+          <div className="space-y-1.5">
+            <Label>HTTP-метод</Label>
+            <Select
+              value={step.method || ""}
+              onChange={(v) => onChange({ method: v })}
+              options={[
+                { value: "", label: "—" },
+                { value: "GET", label: "GET" },
+                { value: "POST", label: "POST" },
+                { value: "PUT", label: "PUT" },
+                { value: "DELETE", label: "DELETE" },
+                { value: "SQL", label: "SQL" },
+              ]}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Тело / параметры запроса</Label>
+            <textarea
+              value={step.requestBody}
+              onChange={(e) => onChange({ requestBody: e.target.value })}
+              rows={3}
+              placeholder="напр.: POST /api/login  {username, password}"
+              className="flex w-full rounded-lg border border-input bg-background/40 px-3 py-2 font-mono text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Ответ сервера</Label>
+            <textarea
+              value={step.responseBody}
+              onChange={(e) => onChange({ responseBody: e.target.value })}
+              rows={2}
+              placeholder="напр.: HTTP 200 — вход выполнен"
+              className="flex w-full rounded-lg border border-input bg-background/40 px-3 py-2 font-mono text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

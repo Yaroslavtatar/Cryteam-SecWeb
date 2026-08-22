@@ -485,6 +485,34 @@ function StepPanel({
                 {activeStep.packetLabel}
               </div>
             </div>
+
+            {(activeStep.request || activeStep.response) && (
+              <div className="overflow-hidden rounded-lg border border-white/10 bg-[#05070d]">
+                {activeStep.request && (
+                  <div className="border-b border-white/5 p-3">
+                    <div className="mb-1 flex items-center gap-1.5 text-[0.65rem] uppercase tracking-wider text-muted-foreground">
+                      <span className="rounded bg-primary/15 px-1.5 py-0.5 font-mono text-primary">
+                        {activeStep.method || "REQ"}
+                      </span>
+                      Запрос
+                    </div>
+                    <pre className="whitespace-pre-wrap break-all font-mono text-xs text-foreground/90">
+                      {activeStep.request}
+                    </pre>
+                  </div>
+                )}
+                {activeStep.response && (
+                  <div className="p-3">
+                    <div className="mb-1 text-[0.65rem] uppercase tracking-wider text-muted-foreground">
+                      Ответ
+                    </div>
+                    <pre className="whitespace-pre-wrap break-all font-mono text-xs text-[hsl(var(--defense))]">
+                      {activeStep.response}
+                    </pre>
+                  </div>
+                )}
+              </div>
+            )}
           </motion.div>
         )}
 

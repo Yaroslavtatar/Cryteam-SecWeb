@@ -69,6 +69,10 @@ export interface SchemeStepData {
   to: string;
   packetLabel: string;
   outcome: StepOutcome;
+  // Детализация уровня запроса (необязательно): показывается в плеере.
+  method?: string;
+  request?: string;
+  response?: string;
 }
 
 export interface Scenario {
@@ -125,6 +129,9 @@ export const scenarios: Scenario[] = [
         to: "waf",
         packetLabel: "' OR 1=1 --",
         outcome: "info",
+        method: "POST",
+        request: 'POST /api/login\n{"username":"admin","password":"\' OR \'1\'=\'1"}',
+        response: "HTTP 403 — WAF: запрос отклонён по сигнатуре",
       },
       {
         order: 2,
@@ -165,6 +172,9 @@ export const scenarios: Scenario[] = [
         to: "db",
         packetLabel: "WHERE id = ?",
         outcome: "blocked",
+        method: "SQL",
+        request: "SELECT * FROM users WHERE login = ? AND pass = ?\n-- params: [\"admin\", \"' OR '1'='1\"]",
+        response: "0 строк — учётные данные неверны (инъекция как данные)",
       },
     ],
     final: {

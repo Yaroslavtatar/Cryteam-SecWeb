@@ -99,6 +99,9 @@ const schemeStepSchema = z.object({
   outcome: z.enum(STEP_OUTCOMES as [string, ...string[]], {
     errorMap: () => ({ message: "Недопустимый исход шага." }),
   }),
+  method: z.string().trim().max(10, "Слишком длинный метод.").default(""),
+  requestBody: z.string().max(2000, "Тело запроса слишком длинное.").default(""),
+  responseBody: z.string().max(2000, "Ответ слишком длинный.").default(""),
 });
 
 export const schemeSchema = z

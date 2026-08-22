@@ -1,4 +1,5 @@
 import { prisma } from "./db";
+import { scenarios } from "./scenarios";
 import type { Scenario, NodeKind, StepOutcome } from "./scenarios";
 
 // Преобразование пользовательских схем (хранятся в БД) в формат Scenario,
@@ -26,6 +27,9 @@ type ModuleWithGraph = {
     toNode: string;
     packetLabel: string;
     outcome: string;
+    method: string;
+    requestBody: string;
+    responseBody: string;
   }[];
 };
 
@@ -64,6 +68,9 @@ export function mapModuleToScenario(m: ModuleWithGraph): Scenario {
         to: s.toNode,
         packetLabel: s.packetLabel,
         outcome: s.outcome as StepOutcome,
+        method: s.method || undefined,
+        request: s.requestBody || undefined,
+        response: s.responseBody || undefined,
       })),
     final: {
       status: (m.finalStatus === "exploited" ? "exploited" : "defended"),
@@ -82,6 +89,12 @@ export async function getCustomScenarios(): Promise<Scenario[]> {
     include: { nodes: true, steps: true },
   });
   return modules.map(mapModuleToScenario);
+}
+
+/** Встроенные + пользовательские сценарии (для уроков и конструктора). */
+export async function getAllScenarios(): Promise<Scenario[]> {
+  const custom = await getCustomScenarios();
+  return [...scenarios, ...custom];
 }
 
 /** Простой транслит + слаг для генерации slug/scenarioKey из названия. */

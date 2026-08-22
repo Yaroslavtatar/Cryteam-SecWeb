@@ -5,7 +5,13 @@ import { NextResponse, type NextRequest } from "next/server";
 //  - для защищённых страниц перенаправляет на /login при отсутствии сессии
 //    (полная проверка прав выполняется в серверных компонентах).
 
-const PROTECTED_PREFIXES = ["/dashboard", "/constructor", "/panel"];
+const PROTECTED_PREFIXES = [
+  "/dashboard",
+  "/constructor",
+  "/panel",
+  "/sandbox",
+  "/lessons",
+];
 const ACCESS_COOKIE = "cts_at";
 
 function buildCsp(isDev: boolean): string {

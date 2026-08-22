@@ -4,7 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { LogOut, Menu, X, LayoutDashboard, Workflow, ShieldCheck } from "lucide-react";
+import {
+  LogOut,
+  Menu,
+  X,
+  LayoutDashboard,
+  Workflow,
+  ShieldCheck,
+  Terminal,
+  GraduationCap,
+} from "lucide-react";
 import { Brand } from "@/components/brand";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +30,8 @@ export interface HeaderUser {
 const NAV = [
   { href: "/dashboard", label: "Кабинет", icon: LayoutDashboard },
   { href: "/constructor", label: "Конструктор", icon: Workflow },
+  { href: "/sandbox", label: "Песочница", icon: Terminal },
+  { href: "/lessons", label: "Уроки", icon: GraduationCap },
 ];
 
 export function AppHeader({ user }: { user: HeaderUser | null }) {

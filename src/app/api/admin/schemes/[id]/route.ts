@@ -57,6 +57,9 @@ export async function GET(
         to: s.toNode,
         packetLabel: s.packetLabel,
         outcome: s.outcome,
+        method: s.method,
+        requestBody: s.requestBody,
+        responseBody: s.responseBody,
       })),
     },
   });
@@ -116,7 +119,7 @@ export async function PUT(
             y: n.y,
           })),
         },
-        steps: {
+          steps: {
           create: data.steps.map((s, i) => ({
             order: i + 1,
             title: s.title,
@@ -125,6 +128,9 @@ export async function PUT(
             toNode: s.to,
             packetLabel: s.packetLabel,
             outcome: s.outcome,
+            method: s.method,
+            requestBody: s.requestBody,
+            responseBody: s.responseBody,
           })),
         },
       },

@@ -66,6 +66,9 @@ export default async function EditorPage({
         to: s.toNode,
         packetLabel: s.packetLabel,
         outcome: s.outcome as StepOutcome,
+        method: s.method,
+        requestBody: s.requestBody,
+        responseBody: s.responseBody,
       })),
     };
   }

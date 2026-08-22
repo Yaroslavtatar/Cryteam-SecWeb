@@ -98,6 +98,11 @@ model SchemeStep {
   packetLabel String  @default("Пакет данных")
   outcome     String  @default("info") // "info" | "blocked" | "exploited"
 
+  // Детализация уровня запроса (для наглядности «менять тело запроса»).
+  method       String @default("") // HTTP-метод: GET/POST/… (или пусто)
+  requestBody  String @default("") // Тело/параметры запроса
+  responseBody String @default("") // Ответ сервера
+
   @@unique([moduleId, order])
   @@index([moduleId])
 }

@@ -229,6 +229,28 @@ function SchemeEditorInner({
     setSelectedNode(null);
   }
 
+  function addStep() {
+    if (rfNodes.length === 0) return;
+    const first = rfNodes[0].id;
+    const second = rfNodes[1]?.id ?? first;
+    setSteps((prev) => {
+      const next = [
+        ...prev,
+        {
+          title: `Шаг ${prev.length + 1}`,
+          description: "",
+          from: first,
+          to: second,
+          packetLabel: "данные",
+          outcome: "info" as StepOutcome,
+        },
+      ];
+      return next;
+    });
+    setSelectedStep(steps.length);
+    setSelectedNode(null);
+  }
+
   function updateStep(i: number, patch: Partial<EditorStep>) {
     setSteps((prev) => prev.map((s, idx) => (idx === i ? { ...s, ...patch } : s)));
   }
@@ -500,11 +522,17 @@ function SchemeEditorInner({
 
       {/* Список шагов */}
       <div className="glass-strong rounded-xl p-4">
-        <div className="mb-3 flex items-center justify-between">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-sm font-semibold">Шаги анимации ({steps.length})</h3>
-          <span className="text-xs text-muted-foreground">
-            Порядок = очередность анимации. Создать шаг: соедините узлы на схеме.
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-muted-foreground">
+              Создать шаг: соедините узлы на схеме или кнопкой →
+            </span>
+            <Button variant="secondary" size="sm" onClick={addStep} disabled={rfNodes.length === 0}>
+              <Plus className="h-4 w-4" />
+              Добавить шаг
+            </Button>
+          </div>
         </div>
         {steps.length === 0 ? (
           <p className="py-6 text-center text-sm text-muted-foreground">

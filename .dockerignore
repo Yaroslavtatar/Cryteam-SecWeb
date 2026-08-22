@@ -1,0 +1,40 @@
+# Зависимости и артефакты сборки — устанавливаются/собираются внутри образа
+node_modules
+.next
+out
+build
+
+# Git и CI
+.git
+.github
+.gitignore
+
+# Окружение и секреты (НЕ включать в образ)
+.env
+.env.*
+!.env.example
+
+# Локальные базы данных SQLite
+*.db
+*.db-journal
+prisma/dev.db
+prisma/*.db
+data
+
+# Документация и медиа
+README.md
+docs
+
+# Тесты и конфиги, не нужные в рантайме
+tests
+vitest.config.ts
+coverage
+
+# Прочее
+Dockerfile
+docker-compose.yml
+.dockerignore
+*.log
+.DS_Store
+.vscode
+.idea

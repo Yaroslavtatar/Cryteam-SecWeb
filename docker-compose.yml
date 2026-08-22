@@ -1,0 +1,45 @@
+# ============================================================
+#  CRYTEAM SecWeb — docker-compose (для Coolify и локального запуска)
+#
+#  Coolify: создайте ресурс типа "Docker Compose", укажите этот файл
+#  и задайте переменные окружения (секреты) в интерфейсе Coolify.
+#  Данные SQLite сохраняются в именованном томе cryteam_data.
+# ============================================================
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cryteam-secweb:latest
+    container_name: cryteam-secweb
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      # Путь к файлу БД внутри тома (не меняйте без необходимости)
+      DATABASE_URL: "file:/app/data/prod.db"
+      SQLITE_DB_PATH: "/app/data/prod.db"
+      # --- Секреты: задайте в интерфейсе Coolify ---
+      JWT_ACCESS_SECRET: "${JWT_ACCESS_SECRET:?Задайте JWT_ACCESS_SECRET}"
+      JWT_REFRESH_SECRET: "${JWT_REFRESH_SECRET:?Задайте JWT_REFRESH_SECRET}"
+      JWT_ACCESS_TTL: "${JWT_ACCESS_TTL:-900}"
+      JWT_REFRESH_TTL: "${JWT_REFRESH_TTL:-1209600}"
+      ADMIN_HASH_ROUTE: "${ADMIN_HASH_ROUTE:?Задайте ADMIN_HASH_ROUTE}"
+      CORS_ALLOWED_ORIGINS: "${CORS_ALLOWED_ORIGINS:-}"
+    volumes:
+      - cryteam_data:/app/data
+    healthcheck:
+      test:
+        - "CMD"
+        - "node"
+        - "-e"
+        - "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  cryteam_data:

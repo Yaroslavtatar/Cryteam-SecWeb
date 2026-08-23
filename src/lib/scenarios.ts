@@ -1,5 +1,5 @@
 // ============================================================
-//  CRYTEAM SecWeb — интерактивные сценарии кибербезопасности.
+//  CRYTEAM SecWeb — интерактивные сценарии профилактики.
 //  Единый источник правды: используется и в seed БД, и во фронтенде
 //  (интерактивный конструктор схем). Все тексты — на русском языке.
 // ============================================================
@@ -20,7 +20,17 @@ export type NodeKind =
   | "phishing"
   | "service"
   | "operator"
-  | "bot";
+  | "bot"
+  | "smartphone"
+  | "tablet"
+  | "laptop"
+  | "desktop"
+  | "router"
+  | "smartwatch"
+  | "iot"
+  | "smarttv"
+  | "printer"
+  | "nas";
 
 /** Исход шага влияет на цвет пакета и подсветку узла назначения. */
 export type StepOutcome = "info" | "blocked" | "exploited" | "success";
@@ -43,6 +53,16 @@ export const NODE_KINDS: NodeKind[] = [
   "service",
   "operator",
   "bot",
+  "smartphone",
+  "tablet",
+  "laptop",
+  "desktop",
+  "router",
+  "smartwatch",
+  "iot",
+  "smarttv",
+  "printer",
+  "nas",
 ];
 
 export const STEP_OUTCOMES: StepOutcome[] = [

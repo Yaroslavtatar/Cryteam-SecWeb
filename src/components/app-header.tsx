@@ -14,6 +14,7 @@ import {
   Terminal,
   GraduationCap,
   ShieldAlert,
+  BookOpen,
 } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -32,8 +33,14 @@ export interface HeaderUser {
 const NAV = [
   { href: "/dashboard", label: "Кабинет", icon: LayoutDashboard },
   { href: "/constructor", label: "Конструктор", icon: Workflow },
+  { href: "/blog", label: "Рекомендации", icon: BookOpen },
   { href: "/sandbox", label: "Песочница", icon: Terminal },
   { href: "/lessons", label: "Уроки", icon: GraduationCap },
+  { href: "/incidents", label: "Инциденты", icon: ShieldAlert },
+];
+
+const PUBLIC_NAV = [
+  { href: "/blog", label: "Рекомендации", icon: BookOpen },
   { href: "/incidents", label: "Инциденты", icon: ShieldAlert },
 ];
 
@@ -56,8 +63,7 @@ export function AppHeader({ user }: { user: HeaderUser | null }) {
         <Brand />
 
         <nav className="hidden items-center gap-1 md:flex">
-          {user &&
-            NAV.map((item) => (
+          {(user ? NAV : PUBLIC_NAV).map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -145,10 +151,12 @@ export function AppHeader({ user }: { user: HeaderUser | null }) {
                 </>
               ) : (
                 <>
-                  <MobileLink href="/incidents" onNavigate={() => setOpen(false)}>
-                    <ShieldAlert className="h-4 w-4" />
-                    Инциденты
-                  </MobileLink>
+                  {PUBLIC_NAV.map((item) => (
+                    <MobileLink key={item.href} href={item.href} onNavigate={() => setOpen(false)}>
+                      <item.icon className="h-4 w-4" />
+                      {item.label}
+                    </MobileLink>
+                  ))}
                   <MobileLink href="/login" onNavigate={() => setOpen(false)}>
                     Вход
                   </MobileLink>

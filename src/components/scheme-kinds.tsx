@@ -15,6 +15,14 @@ import {
   Globe,
   Smartphone,
   Bot,
+  Tablet,
+  Monitor,
+  Router,
+  Watch,
+  Cpu,
+  Tv,
+  Printer,
+  HardDrive,
   type LucideIcon,
 } from "lucide-react";
 import type { NodeKind } from "@/lib/scenarios";
@@ -42,6 +50,16 @@ export const KIND_META: Record<
   api: { icon: Boxes, tone: "data", label: "API" },
   idp: { icon: KeyRound, tone: "data", label: "Провайдер (IdP)" },
   service: { icon: Globe, tone: "data", label: "Сервис" },
+  smartphone: { icon: Smartphone, tone: "neutral", label: "Смартфон" },
+  tablet: { icon: Tablet, tone: "neutral", label: "Планшет" },
+  laptop: { icon: Laptop, tone: "neutral", label: "Ноутбук" },
+  desktop: { icon: Monitor, tone: "neutral", label: "Компьютер" },
+  router: { icon: Router, tone: "neutral", label: "Роутер" },
+  smartwatch: { icon: Watch, tone: "neutral", label: "Умные часы" },
+  iot: { icon: Cpu, tone: "neutral", label: "IoT-устройство" },
+  smarttv: { icon: Tv, tone: "neutral", label: "Smart TV" },
+  printer: { icon: Printer, tone: "neutral", label: "Принтер" },
+  nas: { icon: HardDrive, tone: "data", label: "NAS-хранилище" },
 };
 
 export const TONE_CLASSES: Record<Tone, string> = {

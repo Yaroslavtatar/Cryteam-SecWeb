@@ -34,8 +34,8 @@ export default async function HomePage() {
     },
     {
       icon: GraduationCap,
-      title: "Обучающие модули",
-      text: "Курсы по веб-атакам, сетевой безопасности и авторизации с отслеживанием личного прогресса.",
+      title: "Курсы и рекомендации",
+      text: "Курсы по веб-атакам, сети и авторизации и практические рекомендации по защите с отслеживанием прогресса.",
     },
     {
       icon: Lock,
@@ -74,7 +74,7 @@ export default async function HomePage() {
             <FadeIn>
               <Badge variant="default" className="mb-6">
                 <ShieldCheck className="h-3 w-3" />
-                Платформа обучения кибербезопасности
+                Курсы и рекомендации по кибербезопасности
               </Badge>
             </FadeIn>
 
@@ -99,7 +99,7 @@ export default async function HomePage() {
                   href={user ? "/constructor" : "/register"}
                   className={buttonVariants({ size: "lg" })}
                 >
-                  {user ? "Открыть конструктор" : "Начать обучение"}
+                  {user ? "Открыть конструктор" : "Смотреть курсы"}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
@@ -233,7 +233,7 @@ export default async function HomePage() {
               CRYTEAM <span className="text-primary">SecWeb</span>
             </span>
             <span>
-              Образовательная платформа по кибербезопасности · {new Date().getFullYear()}
+              Курсы и рекомендации по кибербезопасности · {new Date().getFullYear()}
             </span>
           </div>
         </div>

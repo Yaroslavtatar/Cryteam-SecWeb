@@ -91,7 +91,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
           <CardDescription>
             {isRegister
               ? "Зарегистрируйтесь, чтобы получить доступ к обучающим модулям."
-              : "Введите свои данные для доступа к платформе."}
+              : "Введите свои данные для доступа к курсам."}
           </CardDescription>
         </CardHeader>
 

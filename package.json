@@ -2,7 +2,7 @@
   "name": "cryteam-secweb",
   "version": "1.0.0",
   "private": true,
-  "description": "CRYTEAM SecWeb — образовательная платформа по кибербезопасности с интерактивным конструктором атак и защиты",
+  "description": "CRYTEAM SecWeb — курсы и рекомендации по кибербезопасности с интерактивным конструктором атак и защиты",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",

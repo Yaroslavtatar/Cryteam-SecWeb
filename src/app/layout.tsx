@@ -15,9 +15,9 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CRYTEAM SecWeb — платформа кибербезопасности",
+  title: "CRYTEAM SecWeb — курсы и рекомендации по кибербезопасности",
   description:
-    "Интерактивная образовательная платформа по кибербезопасности: пошаговая визуализация атак и защиты, курсы и конструктор схем.",
+    "CRYTEAM SecWeb — курсы и рекомендации по кибербезопасности: пошаговая визуализация атак и защиты, интерактивные схемы, песочница и уроки.",
   applicationName: "CRYTEAM SecWeb",
   robots: { index: false, follow: false },
 };

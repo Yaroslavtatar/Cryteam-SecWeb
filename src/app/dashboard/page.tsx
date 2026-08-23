@@ -103,7 +103,7 @@ export default async function DashboardPage() {
 
       {/* Модули */}
       <div>
-        <h2 className="mb-4 text-xl font-semibold">Обучающие модули</h2>
+        <h2 className="mb-4 text-xl font-semibold">Курсы профилактики</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {modules.map((m, i) => {
             const progress = progressByModule.get(m.id);

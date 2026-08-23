@@ -3,7 +3,7 @@ import {
   ArrowRight,
   ShieldCheck,
   Workflow,
-  GraduationCap,
+  BookOpen,
   Lock,
   Activity,
   KeySquare,
@@ -13,6 +13,7 @@ import {
   Smartphone,
   MessageCircle,
   ShieldAlert,
+  Lightbulb,
 } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { AppHeader } from "@/components/app-header";
@@ -22,6 +23,7 @@ import { GithubStarButton } from "@/components/github-star-button";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { scenarios } from "@/lib/scenarios";
+import { blogArticles } from "@/lib/blog";
 
 export default async function HomePage() {
   const user = await getCurrentUser();
@@ -30,12 +32,12 @@ export default async function HomePage() {
     {
       icon: Workflow,
       title: "Интерактивный конструктор",
-      text: "Пошаговая визуализация атак и защиты с анимацией движения пакетов между узлами схемы.",
+      text: "Пошаговая визуализация типичных схем с анимацией движения пакетов между узлами — смартфоны, роутеры, серверы и другие устройства.",
     },
     {
-      icon: GraduationCap,
-      title: "Обучающие модули",
-      text: "Курсы по веб-атакам, сетевой безопасности и авторизации с отслеживанием личного прогресса.",
+      icon: BookOpen,
+      title: "Курсы профилактики",
+      text: "Практические модули по веб-угрозам, сетевой гигиене и защите аккаунтов с отслеживанием личного прогресса.",
     },
     {
       icon: Lock,
@@ -45,7 +47,7 @@ export default async function HomePage() {
     {
       icon: Activity,
       title: "Журнал аудита",
-      text: "Фиксация входов, ошибок авторизации и действий администраторов для контроля безопасности.",
+      text: "Фиксация входов, ошибок авторизации и действий администраторов для контроля доступа.",
     },
   ];
 
@@ -74,7 +76,7 @@ export default async function HomePage() {
             <FadeIn>
               <Badge variant="default" className="mb-6">
                 <ShieldCheck className="h-3 w-3" />
-                Платформа обучения кибербезопасности
+                Курсы профилактики и цифровой гигиены
               </Badge>
             </FadeIn>
 
@@ -87,9 +89,9 @@ export default async function HomePage() {
 
             <FadeIn delay={0.1}>
               <p className="mt-6 max-w-2xl text-balance text-base text-muted-foreground md:text-lg">
-                Изучайте атаки и защиту наглядно. Запускайте пошаговые
-                интерактивные схемы, наблюдайте за движением данных и понимайте,
-                как срабатывает каждый рубеж обороны.
+                Разбирайте типичные схемы наглядно. Запускайте пошаговые интерактивные
+                сценарии, наблюдайте за движением данных и узнавайте, как защитить
+                себя и свои аккаунты.
               </p>
             </FadeIn>
 
@@ -99,7 +101,7 @@ export default async function HomePage() {
                   href={user ? "/constructor" : "/register"}
                   className={buttonVariants({ size: "lg" })}
                 >
-                  {user ? "Открыть конструктор" : "Начать обучение"}
+                  {user ? "Открыть конструктор" : "Начать курсы"}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
@@ -115,6 +117,13 @@ export default async function HomePage() {
               <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
                 <GithubStarButton />
                 <Link
+                  href="/blog"
+                  className={buttonVariants({ variant: "outline" })}
+                >
+                  <Lightbulb className="h-4 w-4" />
+                  Рекомендации
+                </Link>
+                <Link
                   href="/incidents"
                   className={buttonVariants({ variant: "outline" })}
                 >
@@ -128,8 +137,8 @@ export default async function HomePage() {
               <div className="mt-14 grid grid-cols-3 gap-6 text-center sm:gap-12">
                 {[
                   { value: scenarios.length, label: "Сценариев" },
-                  { value: "5+", label: "Типов атак" },
-                  { value: "2", label: "Роли доступа" },
+                  { value: blogArticles.length, label: "Рекомендаций" },
+                  { value: "10+", label: "Типов устройств" },
                 ].map((stat) => (
                   <div key={stat.label}>
                     <div className="font-mono text-3xl font-bold text-primary md:text-4xl">
@@ -149,10 +158,10 @@ export default async function HomePage() {
         <section className="container py-20">
           <FadeIn className="mx-auto mb-12 max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-              Всё для практической безопасности
+              Всё для профилактики и цифровой гигиены
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Современный стек и продуманная архитектура защиты в одном месте.
+              Практические инструменты и материалы для повседневной защиты в сети.
             </p>
           </FadeIn>
 
@@ -169,6 +178,51 @@ export default async function HomePage() {
               </FadeIn>
             ))}
           </div>
+        </section>
+
+        {/* Рекомендации */}
+        <section className="container py-20">
+          <FadeIn className="mx-auto mb-12 max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              Рекомендации по цифровой гигиене
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              Короткие практичные материалы: пароли, мессенджеры, устройства и
+              действия при подозрении на взлом.
+            </p>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {blogArticles.slice(0, 3).map((article, i) => (
+              <FadeIn key={article.slug} delay={i * 0.05}>
+                <Link
+                  href={`/blog/${article.slug}`}
+                  className="glass group flex h-full flex-col rounded-xl p-6 transition-all hover:border-primary/30 hover:shadow-glow"
+                >
+                  <div className="mb-3 flex items-center justify-between">
+                    <Badge variant="data">{article.category}</Badge>
+                    <span className="text-xs text-muted-foreground">
+                      {article.readMin} мин
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-semibold">{article.title}</h3>
+                  <p className="mt-2 flex-1 text-sm text-muted-foreground line-clamp-3">
+                    {article.summary}
+                  </p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                    Читать <ArrowRight className="h-3 w-3" />
+                  </span>
+                </Link>
+              </FadeIn>
+            ))}
+          </div>
+
+          <FadeIn className="mt-8 text-center">
+            <Link href="/blog" className={buttonVariants({ variant: "secondary" })}>
+              Все рекомендации
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </FadeIn>
         </section>
 
         {/* Сценарии */}
@@ -233,7 +287,7 @@ export default async function HomePage() {
               CRYTEAM <span className="text-primary">SecWeb</span>
             </span>
             <span>
-              Образовательная платформа по кибербезопасности · {new Date().getFullYear()}
+              Курсы профилактики и цифровой гигиены · {new Date().getFullYear()}
             </span>
           </div>
         </div>

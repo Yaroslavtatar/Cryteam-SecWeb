@@ -12,11 +12,13 @@ import {
   Bot,
   Smartphone,
   MessageCircle,
+  ShieldAlert,
 } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { AppHeader } from "@/components/app-header";
 import { CyberBackground } from "@/components/background";
 import { FadeIn } from "@/components/motion";
+import { GithubStarButton } from "@/components/github-star-button";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { scenarios } from "@/lib/scenarios";
@@ -105,6 +107,19 @@ export default async function HomePage() {
                   className={buttonVariants({ variant: "secondary", size: "lg" })}
                 >
                   {user ? "Личный кабинет" : "У меня есть аккаунт"}
+                </Link>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.18}>
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+                <GithubStarButton />
+                <Link
+                  href="/incidents"
+                  className={buttonVariants({ variant: "outline" })}
+                >
+                  <ShieldAlert className="h-4 w-4" />
+                  Сообщить об инциденте
                 </Link>
               </div>
             </FadeIn>
@@ -202,11 +217,25 @@ export default async function HomePage() {
       </main>
 
       <footer className="border-t border-white/5 py-10">
-        <div className="container flex flex-col items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
-          <span className="font-mono tracking-widest text-foreground">
-            CRYTEAM <span className="text-primary">SecWeb</span>
-          </span>
-          <span>Образовательная платформа по кибербезопасности · {new Date().getFullYear()}</span>
+        <div className="container flex flex-col items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <GithubStarButton />
+            <Link
+              href="/incidents"
+              className={buttonVariants({ variant: "outline", size: "sm" })}
+            >
+              <ShieldAlert className="h-4 w-4" />
+              Сообщить об инциденте
+            </Link>
+          </div>
+          <div className="flex w-full flex-col items-center justify-between gap-4 text-sm text-muted-foreground sm:flex-row">
+            <span className="font-mono tracking-widest text-foreground">
+              CRYTEAM <span className="text-primary">SecWeb</span>
+            </span>
+            <span>
+              Образовательная платформа по кибербезопасности · {new Date().getFullYear()}
+            </span>
+          </div>
         </div>
       </footer>
     </>

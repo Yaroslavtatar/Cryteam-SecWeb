@@ -13,10 +13,12 @@ import {
   ShieldCheck,
   Terminal,
   GraduationCap,
+  ShieldAlert,
 } from "lucide-react";
 import { Brand } from "@/components/brand";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { GithubStarButton } from "@/components/github-star-button";
 import { apiFetch } from "@/lib/client";
 import { roleLabel } from "@/lib/roles";
 import { cn } from "@/lib/utils";
@@ -32,6 +34,7 @@ const NAV = [
   { href: "/constructor", label: "Конструктор", icon: Workflow },
   { href: "/sandbox", label: "Песочница", icon: Terminal },
   { href: "/lessons", label: "Уроки", icon: GraduationCap },
+  { href: "/incidents", label: "Инциденты", icon: ShieldAlert },
 ];
 
 export function AppHeader({ user }: { user: HeaderUser | null }) {
@@ -67,6 +70,7 @@ export function AppHeader({ user }: { user: HeaderUser | null }) {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <GithubStarButton />
           {user ? (
             <>
               <div className="flex items-center gap-2 text-right">
@@ -141,6 +145,10 @@ export function AppHeader({ user }: { user: HeaderUser | null }) {
                 </>
               ) : (
                 <>
+                  <MobileLink href="/incidents" onNavigate={() => setOpen(false)}>
+                    <ShieldAlert className="h-4 w-4" />
+                    Инциденты
+                  </MobileLink>
                   <MobileLink href="/login" onNavigate={() => setOpen(false)}>
                     Вход
                   </MobileLink>
@@ -153,6 +161,9 @@ export function AppHeader({ user }: { user: HeaderUser | null }) {
                   </Link>
                 </>
               )}
+              <div className="pt-2">
+                <GithubStarButton className="w-full justify-center" />
+              </div>
             </div>
           </motion.div>
         )}
